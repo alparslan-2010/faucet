@@ -7,7 +7,8 @@ import Swal from 'sweetalert2'
 
 import FaucetAbi from "./abis/Faucet.json";
 
-const faucetContractAddres = "0x5b4389750cd518e28E1c63CDE9a8d6a973484261"
+const faucetContractAddress = "0xA22b2E4fe4bdE7ab7bfb213f9d95EF2c2378151a"
+
 function App() {
 
   const[walletAddress,setWalletAddress] = useState("");
@@ -34,33 +35,35 @@ function App() {
   }
 
   const getTokens = async () => {
-
+   
     try{
+      const contract = new ethers.Contract(faucetContractAddress,FaucetAbi,provider.getSigner()); // 1.contract address, 2.abi,  3.provider
 
-      const contract = new ethers.Contract(faucetContractAddres, FaucetAbi,provider.getSigner());
+      const transaction = await contract.requestToken();
+      console.log("transaction", transaction);
 
-      const transaction  = await contract.requestToken();
-  
-      console.log("contract",contract)
-    }catch (err){
+      if(transaction.hash){
+        Swal.fire({
+          title: 'Success!',
+          html:
+          `Check transaction hash,
+            <a href="https://sepolia.etherscan.io/tx/${transaction.hash}" target="_blank">Etherscan TX Hash</a>
+          at etherscan`,
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        })
+      }
+    } catch(err){
+      console.log(err);
 
-// CommonJS
-const Swal = require('sweetalert2')
-Swal.fire({
-  title: 'Error!',
-  text: 'Do you want to continue',
-  icon: 'error',
-  confirmButtonText: 'Cool'
-})
-      
+      Swal.fire({
+        title: 'Error!',
+        text: err.message,
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      })
     }
-   
-   
   }
-
- 
-
-
 
   return (
     <>
