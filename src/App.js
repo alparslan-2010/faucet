@@ -2,12 +2,10 @@
 import './App.css';
 import {ethers} from "ethers";
 import {useState, useEffect} from "react";
-import Swal from 'sweetalert2'
-
-
 import FaucetAbi from "./abis/Faucet.json";
+import Swal from 'sweetalert2';
 
-const faucetContractAddress = "0xA22b2E4fe4bdE7ab7bfb213f9d95EF2c2378151a"
+const faucetContractAddress = "0xA22b2E4fe4bdE7ab7bfb213f9d95EF2c2378151a"; // kendi faucet kontrat adresinizle degistirin.
 
 function App() {
 
